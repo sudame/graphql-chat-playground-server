@@ -12,6 +12,11 @@ type PageInfo {
   endCursor: Cursor
 }
 
+enum OrderByDirection {
+  ASC
+  DESC
+}
+
 type User implements Node {
   id: ID!
   name: String!
@@ -60,6 +65,7 @@ enum MessageOrderBy {
 
 type Message implements Node {
   id: ID!
+  body: String!
   createdBy: User!
   createdAt: Date!
   deletedAt: Date
@@ -69,6 +75,7 @@ type Message implements Node {
     last: Int
     before: Cursor
     orderBy: ReactionOrderBy
+    orderByDirection: OrderByDirection
   ): ReactionConnection!
 }
 
@@ -106,6 +113,7 @@ type Room implements Node {
     last: Int
     before: Cursor
     orderBy: MessageOrderBy
+    orderByDirection: OrderByDirection
   ): MessageConnection!
   isPinned: Boolean!
   isMuted: Boolean!
@@ -124,7 +132,7 @@ type RoomConnection {
 type Query {
   room(id: ID!): Room
   message(id: ID!): Message
-  uesr(id: ID!): User
+  user(id: ID!): User
   reaction(id: ID!): Reaction
 
   rooms(
@@ -133,5 +141,7 @@ type Query {
     last: Int
     before: Cursor
     orderBy: RoomOrderBy
+    orderByDirection: OrderByDirection
+    loginUserId: ID
   ): RoomConnection!
 }

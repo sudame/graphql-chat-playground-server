@@ -2,9 +2,12 @@
   "extends": "@tsconfig/strictest",
   "compilerOptions": {
     "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "NodeNext"
   },
   "include": [
     "src/**/*.ts",
-    "codegen.ts"
+    "codegen.ts",
+    "prisma/seed.ts"
   ]
 }

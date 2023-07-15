@@ -11,49 +11,51 @@ datasource db {
 }
 
 model User {
-  id       String         @id @default(cuid())
+  id       String     @id @default(cuid())
   name     String
-  Reaction Reaction[]
-  Message  Message[]
-  Rooms    UsersOnRooms[]
+  reaction Reaction[]
+  message  Message[]
+  rooms    Room[]
 }
 
 model Reaction {
   id              String   @id @default(cuid())
   createdBy       User     @relation(fields: [createdByUserId], references: [id])
-  createdByUserId String   @map("userId")
+  createdByUserId String
   emoji           String
   createdAt       DateTime @default(now())
-  Message         Message  @relation(fields: [messageId], references: [id])
+  message         Message  @relation(fields: [messageId], references: [id])
   messageId       String
 }
 
 model Message {
   id              String     @id @default(cuid())
+  body            String
   createdBy       User       @relation(fields: [createdByUserId], references: [id])
-  createdByUserId String     @map("userId")
+  createdByUserId String
   createdAt       DateTime   @default(now())
   deletedAt       DateTime?
   reactions       Reaction[]
-  Room            Room       @relation(fields: [roomId], references: [id])
+  room            Room       @relation(fields: [roomId], references: [id])
   roomId          String
 }
 
 model Room {
-  id                  String         @id @default(cuid())
-  createdAt           DateTime       @default(now())
-  lastMessgaePostedAt DateTime
-  belongingUsers      UsersOnRooms[]
+  id                  String    @id @default(cuid())
+  name                String
+  createdAt           DateTime  @default(now())
+  lastMessagePostedAt DateTime
+  belongingUsers      User[]
   messages            Message[]
-  isPinned            Boolean        @default(false)
-  isMuted             Boolean        @default(false)
+  isPinned            Boolean   @default(false)
+  isMuted             Boolean   @default(false)
 }
 
-model UsersOnRooms {
-  user   User   @relation(fields: [userId], references: [id])
-  Room   Room   @relation(fields: [roomId], references: [id])
-  roomId String
-  userId String
+// model UsersOnRooms {
+//   user   User   @relation(fields: [userId], references: [id])
+//   Room   Room   @relation(fields: [roomId], references: [id])
+//   roomId String
+//   userId String
 
-  @@id([roomId, userId])
-}
+//   @@id([roomId, userId])
+// }

@@ -10,6 +10,6 @@ module.exports = {
     sourceType: "module",
     project: "./tsconfig.json",
   },
-  ignorePatterns: ["/*.js", "**/generated/*.ts"],
+  ignorePatterns: ["/*.js", "src/graphql/index.ts"],
   rules: {},
 };
