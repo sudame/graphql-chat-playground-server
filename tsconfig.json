@@ -1,0 +1,10 @@
+{
+  "extends": "@tsconfig/strictest",
+  "compilerOptions": {
+    "noEmit": true,
+  },
+  "include": [
+    "src/**/*.ts",
+    "codegen.ts"
+  ]
+}

@@ -1,0 +1,137 @@
+scalar Cursor
+scalar Date
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: Cursor
+  endCursor: Cursor
+}
+
+type User implements Node {
+  id: ID!
+  name: String!
+}
+
+type UserEdge {
+  node: User!
+  cursor: Cursor!
+}
+
+type UserConnection {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+}
+
+enum ReactionOrderBy {
+  ID
+  CREATED_BY
+  CREATED_AT
+  EMOJI
+}
+
+type Reaction implements Node {
+  id: ID!
+  createdBy: User!
+  emoji: String!
+  createdAt: Date!
+}
+
+type ReactionEdge {
+  node: Reaction!
+  cursor: Cursor!
+}
+
+type ReactionConnection {
+  edges: [ReactionEdge!]!
+  pageInfo: PageInfo!
+}
+
+enum MessageOrderBy {
+  ID
+  CREATED_BY
+  CREATED_AT
+  DELETED_AT
+}
+
+type Message implements Node {
+  id: ID!
+  createdBy: User!
+  createdAt: Date!
+  deletedAt: Date
+  reactions(
+    first: Int
+    after: Cursor
+    last: Int
+    before: Cursor
+    orderBy: ReactionOrderBy
+  ): ReactionConnection!
+}
+
+type MessageEdge {
+  node: Message!
+  cursor: Cursor!
+}
+
+type MessageConnection {
+  edges: [MessageEdge!]!
+  pageInfo: PageInfo!
+}
+
+enum RoomOrderBy {
+  ID
+  NAME
+  CREATED_AT
+  LAST_MESSAGE_POSTED_AT
+}
+
+type Room implements Node {
+  id: ID!
+  name: String!
+  createdAt: Date!
+  lastMessagePostedAt: Date!
+  belongingUsers(
+    first: Int
+    after: Cursor
+    last: Int
+    before: Cursor
+  ): UserConnection!
+  messages(
+    first: Int
+    after: Cursor
+    last: Int
+    before: Cursor
+    orderBy: MessageOrderBy
+  ): MessageConnection!
+  isPinned: Boolean!
+  isMuted: Boolean!
+}
+
+type RoomEdge {
+  node: Room!
+  cursor: Cursor!
+}
+
+type RoomConnection {
+  edges: [RoomEdge!]!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  room(id: ID!): Room
+  message(id: ID!): Message
+  uesr(id: ID!): User
+  reaction(id: ID!): Reaction
+
+  rooms(
+    first: Int
+    after: Cursor
+    last: Int
+    before: Cursor
+    orderBy: RoomOrderBy
+  ): RoomConnection!
+}
