@@ -14,6 +14,7 @@ beforeAll(async () => {
   // テスト用データベースの作成
   execSync(`${prismaBinary} db push`, {
     env: {
+      ...process.env,
       DATABASE_URL,
     },
   });
@@ -21,6 +22,7 @@ beforeAll(async () => {
   // シード値の流し込み
   execSync(`${prismaBinary} db seed`, {
     env: {
+      ...process.env,
       DATABASE_URL,
     },
   });
