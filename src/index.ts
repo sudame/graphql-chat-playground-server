@@ -224,6 +224,159 @@ const resolvers: Resolvers<Context> = {
       return createdBy;
     },
   },
+
+  Mutation: {
+    createRoom: async (_, { input }, { loginUserId }) => {
+      const loginUser = await prisma.user.findUniqueOrThrow({
+        where: { id: loginUserId },
+      });
+
+      const room = await prisma.room.create({
+        data: {
+          name: input.name,
+          lastMessagePostedAt: new Date(),
+          belongingUsers: {
+            connect: [loginUser],
+          },
+        },
+      });
+
+      return {
+        room,
+      };
+    },
+
+    deleteRoom: async (_, { input }) => {
+      const deletedRoom = await prisma.room.delete({
+        where: {
+          id: input.roomId,
+        },
+      });
+
+      return { deletedRoomId: deletedRoom.id };
+    },
+
+    createUser: async (_, { input }) => {
+      const user = await prisma.user.create({
+        data: {
+          name: input.name,
+        },
+      });
+
+      return { user };
+    },
+
+    postMessage: async (_, { input }, { loginUserId }) => {
+      const loginUser = await prisma.user.findUniqueOrThrow({
+        where: { id: loginUserId },
+      });
+
+      const message = await prisma.message.create({
+        data: {
+          body: input.body,
+          roomId: input.roomId,
+          createdByUserId: loginUser.id,
+        },
+      });
+
+      return {
+        message,
+      };
+    },
+
+    deleteMessage: async (_, { input }) => {
+      const deletedMessage = await prisma.message.update({
+        data: {
+          deletedAt: new Date(),
+        },
+        where: {
+          id: input.messageId,
+        },
+      });
+
+      return { deletedMessage };
+    },
+
+    addReaction: async (_, { input }, { loginUserId }) => {
+      const loginUser = await prisma.user.findUniqueOrThrow({
+        where: { id: loginUserId },
+      });
+
+      const reaction = await prisma.reaction.create({
+        data: {
+          emoji: input.emoji,
+          createdByUserId: loginUser.id,
+          messageId: input.messageId,
+        },
+        include: {
+          message: true,
+        },
+      });
+
+      return {
+        reaction,
+        message: reaction.message,
+      };
+    },
+
+    deleteReaction: async (_, { input }) => {
+      const deletedReaction = await prisma.reaction.delete({
+        where: { id: input.reactionId },
+      });
+
+      return {
+        deletedReactionId: deletedReaction.id,
+      };
+    },
+
+    joinRoom: async (_, { input }) => {
+      const user = await prisma.user.update({
+        where: {
+          id: input.userId,
+        },
+        data: {
+          rooms: {
+            connect: {
+              id: input.roomId,
+            },
+          },
+        },
+      });
+
+      const room = await prisma.room.findUniqueOrThrow({
+        where: { id: input.roomId },
+      });
+
+      return {
+        user,
+        room,
+      };
+    },
+
+    leaveRoom: async (_, { input }) => {
+      const user = await prisma.user.update({
+        where: {
+          id: input.userId,
+        },
+        data: {
+          rooms: {
+            disconnect: {
+              id: input.roomId,
+            },
+          },
+        },
+      });
+
+      const room = await prisma.room.findUniqueOrThrow({
+        where: { id: input.roomId },
+      });
+
+      return {
+        user,
+        room,
+      };
+    },
+  },
 };
 
 async function main(): Promise<void> {

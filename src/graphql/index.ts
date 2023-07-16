@@ -20,6 +20,84 @@ export type Scalars = {
   Date: { input: any; output: any; }
 };
 
+export type AddReactionInput = {
+  emoji: Scalars['String']['input'];
+  messageId: Scalars['ID']['input'];
+};
+
+export type AddReactionPayload = {
+  __typename?: 'AddReactionPayload';
+  message: Message;
+  reaction: Reaction;
+};
+
+export type CreateRoomInput = {
+  name: Scalars['String']['input'];
+};
+
+export type CreateRoomPayload = {
+  __typename?: 'CreateRoomPayload';
+  room: Room;
+};
+
+export type CreateUserInput = {
+  name: Scalars['String']['input'];
+};
+
+export type CreateUserPayload = {
+  __typename?: 'CreateUserPayload';
+  user: User;
+};
+
+export type DeleteMessageInput = {
+  messageId: Scalars['ID']['input'];
+};
+
+export type DeleteMessagePayload = {
+  __typename?: 'DeleteMessagePayload';
+  deletedMessage: Message;
+};
+
+export type DeleteReactionInput = {
+  reactionId: Scalars['ID']['input'];
+};
+
+export type DeleteReactionPayload = {
+  __typename?: 'DeleteReactionPayload';
+  deletedReactionId: Scalars['ID']['output'];
+};
+
+export type DeleteRoomInput = {
+  roomId: Scalars['ID']['input'];
+};
+
+export type DeleteRoomPayload = {
+  __typename?: 'DeleteRoomPayload';
+  deletedRoomId: Scalars['ID']['output'];
+};
+
+export type JoinRoomInput = {
+  roomId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+export type JoinRoomPayload = {
+  __typename?: 'JoinRoomPayload';
+  room: Room;
+  user: User;
+};
+
+export type LeaveRoomInput = {
+  roomId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+export type LeaveRoomPayload = {
+  __typename?: 'LeaveRoomPayload';
+  room: Room;
+  user: User;
+};
+
 export type Message = Node & {
   __typename?: 'Message';
   body: Scalars['String']['output'];
@@ -59,6 +137,64 @@ export enum MessageOrderBy {
   Id = 'ID'
 }
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  addReaction?: Maybe<AddReactionPayload>;
+  createRoom?: Maybe<CreateRoomPayload>;
+  createUser?: Maybe<CreateUserPayload>;
+  deleteMessage?: Maybe<DeleteMessagePayload>;
+  deleteReaction?: Maybe<DeleteReactionPayload>;
+  deleteRoom?: Maybe<DeleteRoomPayload>;
+  joinRoom?: Maybe<JoinRoomPayload>;
+  leaveRoom?: Maybe<LeaveRoomPayload>;
+  postMessage?: Maybe<PostMessagePayload>;
+};
+
+
+export type MutationAddReactionArgs = {
+  input: AddReactionInput;
+};
+
+
+export type MutationCreateRoomArgs = {
+  input: CreateRoomInput;
+};
+
+
+export type MutationCreateUserArgs = {
+  input: CreateUserInput;
+};
+
+
+export type MutationDeleteMessageArgs = {
+  input: DeleteMessageInput;
+};
+
+
+export type MutationDeleteReactionArgs = {
+  input: DeleteReactionInput;
+};
+
+
+export type MutationDeleteRoomArgs = {
+  input: DeleteRoomInput;
+};
+
+
+export type MutationJoinRoomArgs = {
+  input: JoinRoomInput;
+};
+
+
+export type MutationLeaveRoomArgs = {
+  input: LeaveRoomInput;
+};
+
+
+export type MutationPostMessageArgs = {
+  input: PostMessageInput;
+};
+
 export type Node = {
   id: Scalars['ID']['output'];
 };
@@ -74,6 +210,16 @@ export type PageInfo = {
   hasNextPage: Scalars['Boolean']['output'];
   hasPreviousPage: Scalars['Boolean']['output'];
   startCursor?: Maybe<Scalars['Cursor']['output']>;
+};
+
+export type PostMessageInput = {
+  body: Scalars['String']['input'];
+  roomId: Scalars['ID']['input'];
+};
+
+export type PostMessagePayload = {
+  __typename?: 'PostMessagePayload';
+  message: Message;
 };
 
 export type Query = {
@@ -286,18 +432,37 @@ export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = R
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AddReactionInput: AddReactionInput;
+  AddReactionPayload: ResolverTypeWrapper<Omit<AddReactionPayload, 'message' | 'reaction'> & { message: ResolversTypes['Message'], reaction: ResolversTypes['Reaction'] }>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  CreateRoomInput: CreateRoomInput;
+  CreateRoomPayload: ResolverTypeWrapper<Omit<CreateRoomPayload, 'room'> & { room: ResolversTypes['Room'] }>;
+  CreateUserInput: CreateUserInput;
+  CreateUserPayload: ResolverTypeWrapper<CreateUserPayload>;
   Cursor: ResolverTypeWrapper<Scalars['Cursor']['output']>;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
+  DeleteMessageInput: DeleteMessageInput;
+  DeleteMessagePayload: ResolverTypeWrapper<Omit<DeleteMessagePayload, 'deletedMessage'> & { deletedMessage: ResolversTypes['Message'] }>;
+  DeleteReactionInput: DeleteReactionInput;
+  DeleteReactionPayload: ResolverTypeWrapper<DeleteReactionPayload>;
+  DeleteRoomInput: DeleteRoomInput;
+  DeleteRoomPayload: ResolverTypeWrapper<DeleteRoomPayload>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  JoinRoomInput: JoinRoomInput;
+  JoinRoomPayload: ResolverTypeWrapper<Omit<JoinRoomPayload, 'room'> & { room: ResolversTypes['Room'] }>;
+  LeaveRoomInput: LeaveRoomInput;
+  LeaveRoomPayload: ResolverTypeWrapper<Omit<LeaveRoomPayload, 'room'> & { room: ResolversTypes['Room'] }>;
   Message: ResolverTypeWrapper<MessageParent>;
   MessageConnection: ResolverTypeWrapper<Omit<MessageConnection, 'edges'> & { edges: Array<ResolversTypes['MessageEdge']> }>;
   MessageEdge: ResolverTypeWrapper<Omit<MessageEdge, 'node'> & { node: ResolversTypes['Message'] }>;
   MessageOrderBy: MessageOrderBy;
+  Mutation: ResolverTypeWrapper<{}>;
   Node: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Node']>;
   OrderByDirection: OrderByDirection;
   PageInfo: ResolverTypeWrapper<PageInfo>;
+  PostMessageInput: PostMessageInput;
+  PostMessagePayload: ResolverTypeWrapper<Omit<PostMessagePayload, 'message'> & { message: ResolversTypes['Message'] }>;
   Query: ResolverTypeWrapper<{}>;
   Reaction: ResolverTypeWrapper<ReactionParent>;
   ReactionConnection: ResolverTypeWrapper<Omit<ReactionConnection, 'edges'> & { edges: Array<ResolversTypes['ReactionEdge']> }>;
@@ -315,16 +480,35 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AddReactionInput: AddReactionInput;
+  AddReactionPayload: Omit<AddReactionPayload, 'message' | 'reaction'> & { message: ResolversParentTypes['Message'], reaction: ResolversParentTypes['Reaction'] };
   Boolean: Scalars['Boolean']['output'];
+  CreateRoomInput: CreateRoomInput;
+  CreateRoomPayload: Omit<CreateRoomPayload, 'room'> & { room: ResolversParentTypes['Room'] };
+  CreateUserInput: CreateUserInput;
+  CreateUserPayload: CreateUserPayload;
   Cursor: Scalars['Cursor']['output'];
   Date: Scalars['Date']['output'];
+  DeleteMessageInput: DeleteMessageInput;
+  DeleteMessagePayload: Omit<DeleteMessagePayload, 'deletedMessage'> & { deletedMessage: ResolversParentTypes['Message'] };
+  DeleteReactionInput: DeleteReactionInput;
+  DeleteReactionPayload: DeleteReactionPayload;
+  DeleteRoomInput: DeleteRoomInput;
+  DeleteRoomPayload: DeleteRoomPayload;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
+  JoinRoomInput: JoinRoomInput;
+  JoinRoomPayload: Omit<JoinRoomPayload, 'room'> & { room: ResolversParentTypes['Room'] };
+  LeaveRoomInput: LeaveRoomInput;
+  LeaveRoomPayload: Omit<LeaveRoomPayload, 'room'> & { room: ResolversParentTypes['Room'] };
   Message: MessageParent;
   MessageConnection: Omit<MessageConnection, 'edges'> & { edges: Array<ResolversParentTypes['MessageEdge']> };
   MessageEdge: Omit<MessageEdge, 'node'> & { node: ResolversParentTypes['Message'] };
+  Mutation: {};
   Node: ResolversInterfaceTypes<ResolversParentTypes>['Node'];
   PageInfo: PageInfo;
+  PostMessageInput: PostMessageInput;
+  PostMessagePayload: Omit<PostMessagePayload, 'message'> & { message: ResolversParentTypes['Message'] };
   Query: {};
   Reaction: ReactionParent;
   ReactionConnection: Omit<ReactionConnection, 'edges'> & { edges: Array<ResolversParentTypes['ReactionEdge']> };
@@ -338,6 +522,22 @@ export type ResolversParentTypes = ResolversObject<{
   UserEdge: UserEdge;
 }>;
 
+export type AddReactionPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AddReactionPayload'] = ResolversParentTypes['AddReactionPayload']> = ResolversObject<{
+  message?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
+  reaction?: Resolver<ResolversTypes['Reaction'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CreateRoomPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateRoomPayload'] = ResolversParentTypes['CreateRoomPayload']> = ResolversObject<{
+  room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CreateUserPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateUserPayload'] = ResolversParentTypes['CreateUserPayload']> = ResolversObject<{
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export interface CursorScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Cursor'], any> {
   name: 'Cursor';
 }
@@ -345,6 +545,33 @@ export interface CursorScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date';
 }
+
+export type DeleteMessagePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteMessagePayload'] = ResolversParentTypes['DeleteMessagePayload']> = ResolversObject<{
+  deletedMessage?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type DeleteReactionPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteReactionPayload'] = ResolversParentTypes['DeleteReactionPayload']> = ResolversObject<{
+  deletedReactionId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type DeleteRoomPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteRoomPayload'] = ResolversParentTypes['DeleteRoomPayload']> = ResolversObject<{
+  deletedRoomId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type JoinRoomPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['JoinRoomPayload'] = ResolversParentTypes['JoinRoomPayload']> = ResolversObject<{
+  room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type LeaveRoomPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['LeaveRoomPayload'] = ResolversParentTypes['LeaveRoomPayload']> = ResolversObject<{
+  room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
 
 export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = ResolversObject<{
   body?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -368,6 +595,18 @@ export type MessageEdgeResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  addReaction?: Resolver<Maybe<ResolversTypes['AddReactionPayload']>, ParentType, ContextType, RequireFields<MutationAddReactionArgs, 'input'>>;
+  createRoom?: Resolver<Maybe<ResolversTypes['CreateRoomPayload']>, ParentType, ContextType, RequireFields<MutationCreateRoomArgs, 'input'>>;
+  createUser?: Resolver<Maybe<ResolversTypes['CreateUserPayload']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
+  deleteMessage?: Resolver<Maybe<ResolversTypes['DeleteMessagePayload']>, ParentType, ContextType, RequireFields<MutationDeleteMessageArgs, 'input'>>;
+  deleteReaction?: Resolver<Maybe<ResolversTypes['DeleteReactionPayload']>, ParentType, ContextType, RequireFields<MutationDeleteReactionArgs, 'input'>>;
+  deleteRoom?: Resolver<Maybe<ResolversTypes['DeleteRoomPayload']>, ParentType, ContextType, RequireFields<MutationDeleteRoomArgs, 'input'>>;
+  joinRoom?: Resolver<Maybe<ResolversTypes['JoinRoomPayload']>, ParentType, ContextType, RequireFields<MutationJoinRoomArgs, 'input'>>;
+  leaveRoom?: Resolver<Maybe<ResolversTypes['LeaveRoomPayload']>, ParentType, ContextType, RequireFields<MutationLeaveRoomArgs, 'input'>>;
+  postMessage?: Resolver<Maybe<ResolversTypes['PostMessagePayload']>, ParentType, ContextType, RequireFields<MutationPostMessageArgs, 'input'>>;
+}>;
+
 export type NodeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = ResolversObject<{
   __resolveType: TypeResolveFn<'Message' | 'Reaction' | 'Room' | 'User', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -378,6 +617,11 @@ export type PageInfoResolvers<ContextType = any, ParentType extends ResolversPar
   hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   hasPreviousPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   startCursor?: Resolver<Maybe<ResolversTypes['Cursor']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PostMessagePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['PostMessagePayload'] = ResolversParentTypes['PostMessagePayload']> = ResolversObject<{
+  message?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -452,13 +696,23 @@ export type UserEdgeResolvers<ContextType = any, ParentType extends ResolversPar
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
+  AddReactionPayload?: AddReactionPayloadResolvers<ContextType>;
+  CreateRoomPayload?: CreateRoomPayloadResolvers<ContextType>;
+  CreateUserPayload?: CreateUserPayloadResolvers<ContextType>;
   Cursor?: GraphQLScalarType;
   Date?: GraphQLScalarType;
+  DeleteMessagePayload?: DeleteMessagePayloadResolvers<ContextType>;
+  DeleteReactionPayload?: DeleteReactionPayloadResolvers<ContextType>;
+  DeleteRoomPayload?: DeleteRoomPayloadResolvers<ContextType>;
+  JoinRoomPayload?: JoinRoomPayloadResolvers<ContextType>;
+  LeaveRoomPayload?: LeaveRoomPayloadResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
   MessageConnection?: MessageConnectionResolvers<ContextType>;
   MessageEdge?: MessageEdgeResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Node?: NodeResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
+  PostMessagePayload?: PostMessagePayloadResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Reaction?: ReactionResolvers<ContextType>;
   ReactionConnection?: ReactionConnectionResolvers<ContextType>;
