@@ -389,7 +389,7 @@ async function main(): Promise<void> {
     resolvers,
   });
 
-  await startStandaloneServer(server, {
+  const res = await startStandaloneServer(server, {
     listen: {
       port: 4000,
     },
@@ -404,7 +404,7 @@ async function main(): Promise<void> {
     },
   });
 
-  console.log("🚀 Server ready at: http://localhost:4000/");
+  console.log(`🚀 Server ready at: ${res.url}`);
 }
 
 void main();
